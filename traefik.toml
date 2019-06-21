@@ -1,0 +1,36 @@
+defaultEntryPoints = ["http", "https"]
+
+[entryPoints]
+
+# http redirects to https
+[entryPoints.http]
+address = ":80"
+[entryPoints.http.redirect]
+entryPoint = "https"
+
+# https is the default
+[entryPoints.https]
+address = ":443"
+
+[entryPoints.https.tls]
+
+# Enable ACME (Let's Encrypt): automatic SSL
+[acme]
+email = "ashford91@gmail.com"
+storage = "/acme.json"
+entryPoint = "https"
+OnHostRule = false
+
+[[acme.domains]]
+  main = "*.ashford.sh"
+  sans = ["ashford.sh"]
+
+[acme.dnsChallenge]
+  provider = "digitalocean"
+  delayBeforeCheck = 0
+
+[docker]
+endpoint = "unix:///var/run/docker.sock"
+domain = "ashford.sh"
+watch = true
+exposedbydefault = false
